@@ -71,43 +71,46 @@ for Con in country:
 
 
 html = """ 
+  <div>
+  <h6 style=" font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  font-size: %s; padding-left: 5px; color: %s;">Country Name : %s </h6></div>
+  <div>
+  <h6 style=" font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 15px; padding-left: 5px; color: purple; margin-top: -50px; padding-top:-20px;">Last Update: 22 Jun, 2021 </h6></div>
 
-  <h6 style=" font-family: ubuntu; font-size: 26px; padding-left: 5px; color: red; ;">Country Name : %s </h6>
-
-  <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -15px;">Total Case Confirmed: %s</h6>
-  </div>
-  <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -15px;">Today's Confiemed Case: %s</h6>
-  </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style=" font-family: ubuntu; font-size: 20px; padding-left: 5px; color: black; margin-top: -15px;">Total Death: %s</h6>
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; padding-left: 5px; margin-top: -15px;">Total Case Confirmed: %s</h6>
   </div>
   <div style="display: flex; justify-content: space-between;">
-  <h6 style=" font-family: ubuntu; font-size: 20px; padding-left: 5px; color: black; margin-top: -15px;">Today's Death: %s</h6>
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; padding-left: 5px; margin-top: -30px;">Today's Confirmed Case: %s</h6>
   </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -15px;">Total Recover: %s m</h6>
+  <h6 style=" font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; padding-left: 5px; color: black; margin-top: -30px;">Total Death: %s</h6>
+  </div>
+  <div style="display: flex; justify-content: space-between;">
+  <h6 style=" font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;; font-size: 16px; padding-left: 5px; color: black; margin-top: -30px;">Today's Death: %s</h6>
   </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -15px;">Today's Recover: %s m</h6>
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;; font-size: 16px; padding-left: 5px; margin-top: -30px;">Total Recover: %s</h6>
   </div>
 
+  <div style="display: flex; justify-content: space-between;">
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;; font-size: 16px; padding-left: 5px; margin-top: -30px;">Today's Recover: %s</h6>
+  </div>
 
+  <div style="display: flex; justify-content: space-between;">
+  <a style="font-family: sans-serif; font-size: 15px; padding-left: 5px; margin-top: -30px; text-decoration:none;" href="https://www.google.com/search?q=%%22%s Corona Update%%22" target="_blank">For more info..</a>
+  </div>    
   </div>             
            """
 
           
 
-baseMap = folium.Map(width = "100%", height = '90%', location= [53.00352237505729, -10.870339025768288] , min_zoom = 1, max_zoom = 15, zoom_start = 2 ,tiles= None)
+baseMap = folium.Map(width = "100%", height = '90%', location= [24.213947958206976, 90.13233056778674] , min_zoom = 1, max_zoom = 15, zoom_start = 4 ,tiles= None)
 fgC = folium.FeatureGroup(name = "CoronaInfo")
 
 for con,toCase, tCase, toDeath, tDeath, toReco, tReco, lat, lon in zip(country, totalCase, lastDayCase,totalDeath, todayDeath,totalRecoverCase, todaysRecover, latitude, longitude):
-    iframe = folium.IFrame(html =  html % (con, toCase,tCase, toDeath,tDeath, toReco, tReco ) , width=400, height= 250)
-
 
     if toDeath < 10000:
         iColor = 'grey'
@@ -121,6 +124,21 @@ for con,toCase, tCase, toDeath, tDeath, toReco, tReco, lat, lon in zip(country, 
     else:
         iColor = 'red' 
         Radius = 27
+
+#for font settings by len of country name
+    if len(con) <= 6:
+      cFont = "24px"
+    elif 6 < len(con) <= 10:
+      cFont = "21px"
+    elif 10 < len(con) < 13:
+      cFont = "20px"
+    else:
+      cFont = "18px" 
+
+    iframe = folium.IFrame(html =  html % (cFont, iColor, con, toCase,tCase, toDeath,tDeath, toReco, tReco,con) , width=320, height= 250)
+
+
+
 
 
     fgC.add_child(folium.CircleMarker(location= [lat, lon], radius = Radius, popup = folium.Popup(iframe) , tooltip= f"Click to see Corona Case in {con}" , fill_color = iColor, color = None, fill_opacity = 0.7 ))
@@ -152,38 +170,36 @@ status = list(df.STATUS)
 
 #Add HTML
 html2 = """ 
-  <h6 style=" font-family: ubuntu; font-size: 26px; padding-left: 5px; color: red; ;"> %s Volcano</h6>
+  <h6 style=" font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 24px; padding-left: 5px; color: %s; ;"> %s Volcano</h6>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -15px;">Name &nbsp;&nbsp; : %s</h6>
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 18px; padding-left: 5px; margin-top: -30px;">Name &nbsp;&nbsp; : %s</h6>
   </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style=" font-family: ubuntu; font-size: 20px; padding-left: 5px; color: black; margin-top: -20px;">Location: %s</h6>
+  <h6 style=" font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 18px; padding-left: 5px; color: black; margin-top: -30px;">Location: %s</h6>
   </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -20px;">Height &nbsp;: %s m</h6>
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 18px; padding-left: 5px; margin-top: -30px;">Height &nbsp;: %s m</h6>
   </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -20px;
-  disply:flex; justify-content: flex-start;">Type &nbsp; &nbsp;: %s </h6>
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 18px; padding-left: 5px; margin-top: -30px; disply:flex; justify-content: flex-start;">Type &nbsp; &nbsp;: %s </h6>
   </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <h6 style="font-family: ubuntu; font-size: 20px; padding-left: 5px; margin-top: -15px;">Status &nbsp;: %s</h6>
+  <h6 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 18px; padding-left: 5px; margin-top: -30px;">Status &nbsp;: %s</h6>
   </div>
 
   <div style="display: flex; justify-content: space-between;">
-  <a style="font-family: sans-serif; font-size: 18px; padding-left: 5px; margin-top: -25px; text-decoration:none;" href="https://www.google.com/search?q=%%22%s Volcano%%22" target="_blank">For more info..</a>
+  <a style="font-family: sans-serif; font-size: 16px; padding-left: 5px; margin-top: -25px; text-decoration:none;" href="https://www.google.com/search?q=%%22%s Volcano%%22" target="_blank">For more info..</a>
   </div>         
            """
 
 
 fgV = folium.FeatureGroup(name = "Volacanos(US ONLY)")
 for l, ln,h,lo,nm,typ,sts in zip(lat, lon,height,loc, name, tyype,status):
-  iframe = folium.IFrame(html = html2 % (nm, nm,lo, str(h),typ,sts, nm ) , width=400, height=300)  
 
   if h < 1000:
     icolor = "gray"
@@ -193,6 +209,9 @@ for l, ln,h,lo,nm,typ,sts in zip(lat, lon,height,loc, name, tyype,status):
     icolor = "green"
   else:
     icolor = "red"
+
+  iframe = folium.IFrame(html = html2 % (icolor, nm, nm,lo, str(h),typ,sts, nm ) , width=300, height=300)  
+
 
 
   fgV.add_child(folium.Marker(location=[l, ln], popup=folium.Popup(iframe), tooltip= f"{nm} Volcano. Double click for more info.",  icon=folium.Icon(color=icolor, shape="circle")))
