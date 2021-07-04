@@ -107,7 +107,7 @@ html = """
 
           
 
-baseMap = folium.Map(width = "100%", height = '90%', location= [24.213947958206976, 90.13233056778674] , min_zoom = 1, max_zoom = 15, zoom_start = 4 ,tiles= None)
+baseMap = folium.Map(width = "100%", height = '100%', location= [24.213947958206976, 90.13233056778674] , min_zoom = 1, max_zoom = 15, zoom_start = 4 ,tiles= None)
 fgC = folium.FeatureGroup(name = "CoronaInfo")
 
 for con,toCase, tCase, toDeath, tDeath, toReco, tReco, lat, lon in zip(country, totalCase, lastDayCase,totalDeath, todayDeath,totalRecoverCase, todaysRecover, latitude, longitude):
